@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Bezalel Workshop</title>
+  <meta name="description" content="A place for building, creating, and exploring with curiosity and faith.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       THE BEZALEL WORKSHOP
+       A craftsman's homepage
+       ============================================ */
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      /* Wood & warmth */
+      --walnut-deep: #2C1810;
+      --walnut: #3B2314;
+      --walnut-mid: #5C3A21;
+      --oak: #7A5230;
+      --honey: #C4943A;
+      --amber: #E8B84B;
+      --copper: #B87333;
+      --copper-light: #D4956A;
+
+      /* Parchment & light */
+      --parchment: #F5E6C8;
+      --parchment-light: #FDF8F0;
+      --cream: #EDE0C8;
+      --warm-white: #FAF3E8;
+
+      /* Text */
+      --ink: #2C1810;
+      --ink-soft: #4A3728;
+      --ink-faded: #7A6B5D;
+
+      /* Fonts */
+      --font-display: 'Cormorant Garamond', 'Georgia', serif;
+      --font-body: 'Crimson Text', 'Georgia', serif;
+      --font-accent: 'IM Fell English SC', serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      background: var(--walnut-deep);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---- WOOD GRAIN BACKGROUND ---- */
+    .wood-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        /* Grain lines */
+        repeating-linear-gradient(
+          2deg,
+          transparent,
+          transparent 3px,
+          rgba(0,0,0,0.03) 3px,
+          rgba(0,0,0,0.03) 4px
+        ),
+        repeating-linear-gradient(
+          178deg,
+          transparent,
+          transparent 7px,
+          rgba(0,0,0,0.02) 7px,
+          rgba(0,0,0,0.02) 8px
+        ),
+        /* Knot suggestion */
+        radial-gradient(ellipse 120px 80px at 15% 30%, rgba(60,30,15,0.15), transparent),
+        radial-gradient(ellipse 80px 100px at 78% 65%, rgba(60,30,15,0.1), transparent),
+        radial-gradient(ellipse 60px 50px at 45% 80%, rgba(60,30,15,0.08), transparent),
+        /* Base wood color variation */
+        linear-gradient(
+          180deg,
+          #4A3020 0%,
+          #5C3A21 15%,
+          #523018 30%,
+          #6B4428 50%,
+          #5C3A21 70%,
+          #4A3020 85%,
+          #3B2314 100%
+        );
+    }
+
+    /* ---- WARM LIGHT VIGNETTE ---- */
+    .light-vignette {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        /* Warm center glow - like a desk lamp */
+        radial-gradient(ellipse 70% 50% at 50% 25%, rgba(232, 184, 75, 0.08), transparent),
+        radial-gradient(ellipse 50% 60% at 50% 50%, rgba(196, 148, 58, 0.05), transparent),
+        /* Dark edges - vignette */
+        radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, rgba(20, 10, 5, 0.4));
+      pointer-events: none;
+    }
+
+    /* ---- DUST PARTICLES ---- */
+    .dust {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .dust-particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(232, 184, 75, 0.3);
+      border-radius: 50%;
+      animation: drift linear infinite;
+    }
+
+    @keyframes drift {
+      0% {
+        transform: translateY(100vh) translateX(0) scale(1);
+        opacity: 0;
+      }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% {
+        transform: translateY(-20px) translateX(40px) scale(0.5);
+        opacity: 0;
+      }
+    }
+
+    /* ---- NAVIGATION ---- */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      transition: background 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    nav.scrolled {
+      background: rgba(44, 24, 16, 0.92);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    nav a {
+      font-family: var(--font-accent);
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--parchment);
+      text-decoration: none;
+      padding: 0.4rem 0;
+      position: relative;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+
+    nav a:hover,
+    nav a.active {
+      opacity: 1;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 1px;
+      background: var(--honey);
+      transition: width 0.3s ease, left 0.3s ease;
+    }
+
+    nav a:hover::after,
+    nav a.active::after {
+      width: 100%;
+      left: 0;
+    }
+
+    /* Decorative dots between nav items */
+    nav a:not(:last-child)::before {
+      content: '\00B7';
+      position: absolute;
+      right: -1.35rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--copper);
+      opacity: 0.5;
+      font-size: 1.2rem;
+      pointer-events: none;
+    }
+
+    /* ---- MAIN CONTENT ---- */
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ---- HERO SECTION ---- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem 2rem 4rem;
+      text-align: center;
+    }
+
+    /* Decorative top ornament */
+    .ornament {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--copper), transparent);
+      margin-bottom: 2.5rem;
+      position: relative;
+      opacity: 0;
+      animation: fadeReveal 1s ease 0.3s forwards;
+    }
+
+    .ornament::before,
+    .ornament::after {
+      content: '';
+      position: absolute;
+      top: -4px;
+      width: 8px;
+      height: 8px;
+      border: 1px solid var(--copper);
+      transform: rotate(45deg);
+    }
+
+    .ornament::before { left: -12px; }
+    .ornament::after { right: -12px; }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 600;
+      color: var(--parchment-light);
+      letter-spacing: 0.04em;
+      line-height: 1.15;
+      margin-bottom: 0.3rem;
+      text-shadow:
+        0 2px 4px rgba(0,0,0,0.3),
+        0 0 40px rgba(232, 184, 75, 0.08);
+      opacity: 0;
+      animation: fadeReveal 1.2s ease 0.5s forwards;
+    }
+
+    .hero h1 .the {
+      display: block;
+      font-family: var(--font-accent);
+      font-size: 0.35em;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--honey);
+      margin-bottom: 0.4rem;
+      opacity: 0.85;
+    }
+
+    .hero h1 .workshop {
+      display: block;
+      font-size: 0.45em;
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: 0.12em;
+      color: var(--copper-light);
+      margin-top: 0.2rem;
+    }
+
+    /* Tagline */
+    .tagline {
+      font-family: var(--font-body);
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      font-style: italic;
+      color: var(--cream);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-top: 2rem;
+      opacity: 0;
+      animation: fadeReveal 1s ease 1s forwards;
+    }
+
+    .tagline .ampersand {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.15em;
+      color: var(--honey);
+    }
+
+    /* Scroll hint */
+    .scroll-hint {
+      margin-top: 4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      opacity: 0;
+      animation: fadeReveal 1s ease 1.5s forwards;
+    }
+
+    .scroll-hint span {
+      font-family: var(--font-accent);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-faded);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--copper), transparent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+
+    @keyframes fadeReveal {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ---- DIVIDER ---- */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 0 2rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .section-divider .line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--copper), transparent);
+      opacity: 0.3;
+    }
+
+    .section-divider .diamond {
+      width: 6px;
+      height: 6px;
+      border: 1px solid var(--copper);
+      transform: rotate(45deg);
+      opacity: 0.5;
+      flex-shrink: 0;
+    }
+
+    /* ---- FEED SECTION ---- */
+    .feed-section {
+      padding: 5rem 2rem 6rem;
+      max-width: 740px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 600;
+      color: var(--parchment);
+      letter-spacing: 0.03em;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-header p {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--ink-faded);
+    }
+
+    /* Feed placeholder - looks like a workshop bulletin board */
+    .feed-board {
+      background:
+        /* Paper/cork texture */
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0,0,0,0.015) 2px,
+          rgba(0,0,0,0.015) 3px
+        ),
+        linear-gradient(
+          135deg,
+          rgba(245, 230, 200, 0.06),
+          rgba(196, 148, 58, 0.04),
+          rgba(245, 230, 200, 0.06)
+        );
+      border: 1px solid rgba(184, 115, 51, 0.15);
+      border-radius: 2px;
+      padding: 2.5rem 2rem;
+      position: relative;
+    }
+
+    /* Corner brackets */
+    .feed-board::before,
+    .feed-board::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-color: var(--copper);
+      border-style: solid;
+      opacity: 0.25;
+    }
+
+    .feed-board::before {
+      top: 8px;
+      left: 8px;
+      border-width: 1px 0 0 1px;
+    }
+
+    .feed-board::after {
+      bottom: 8px;
+      right: 8px;
+      border-width: 0 1px 1px 0;
+    }
+
+    .feed-placeholder {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .feed-item-skeleton {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(184, 115, 51, 0.08);
+    }
+
+    .feed-item-skeleton:last-child {
+      border-bottom: none;
+    }
+
+    .skeleton-date {
+      font-family: var(--font-accent);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--copper);
+      opacity: 0.4;
+      white-space: nowrap;
+      min-width: 60px;
+      padding-top: 0.2rem;
+    }
+
+    .skeleton-content {
+      flex: 1;
+    }
+
+    .skeleton-line {
+      height: 8px;
+      border-radius: 1px;
+      background: linear-gradient(
+        90deg,
+        rgba(184, 115, 51, 0.08),
+        rgba(184, 115, 51, 0.12),
+        rgba(184, 115, 51, 0.08)
+      );
+      background-size: 200% 100%;
+      animation: shimmer 3s ease-in-out infinite;
+      margin-bottom: 0.5rem;
+    }
+
+    .skeleton-line:last-child {
+      margin-bottom: 0;
+    }
+
+    .skeleton-line.short { width: 60%; }
+    .skeleton-line.medium { width: 85%; }
+    .skeleton-line.long { width: 95%; }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .feed-coming-soon {
+      text-align: center;
+      padding-top: 1.5rem;
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--ink-faded);
+      opacity: 0.6;
+    }
+
+    /* ---- FOOTER ---- */
+    footer {
+      padding: 3rem 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(184, 115, 51, 0.1);
+    }
+
+    footer p {
+      font-family: var(--font-accent);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faded);
+      opacity: 0.4;
+    }
+
+    footer .verse {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.85rem;
+      text-transform: none;
+      letter-spacing: normal;
+      color: var(--cream);
+      opacity: 0.3;
+      margin-bottom: 1rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+
+    /* ---- SCROLL REVEAL ---- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 600px) {
+      nav {
+        gap: 1.5rem;
+        padding: 1rem 1.25rem;
+      }
+
+      nav a {
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+      }
+
+      nav a:not(:last-child)::before {
+        right: -0.85rem;
+      }
+
+      .hero {
+        padding: 5rem 1.5rem 3rem;
+      }
+
+      .tagline {
+        margin-top: 1.5rem;
+      }
+
+      .feed-section {
+        padding: 3.5rem 1.25rem 4rem;
+      }
+
+      .feed-board {
+        padding: 1.75rem 1.25rem;
+      }
+
+      .feed-item-skeleton {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Layered background -->
+  <div class="wood-bg" aria-hidden="true"></div>
+  <div class="light-vignette" aria-hidden="true"></div>
+  <div class="dust" id="dust" aria-hidden="true"></div>
+
+  <!-- Navigation -->
+  <nav id="nav" role="navigation" aria-label="Main navigation">
+    <a href="#feed" class="active">Feed</a>
+    <a href="#forge">The Forge</a>
+    <a href="#about">About</a>
+  </nav>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero" id="home">
+      <div class="ornament" aria-hidden="true"></div>
+      <h1>
+        <span class="the">The</span>
+        Bezalel
+        <span class="workshop">Workshop</span>
+      </h1>
+      <p class="tagline">
+        Building with hands <span class="ampersand">&amp;</span> heart.<br>
+        Driven by curiosity, grounded in faith.
+      </p>
+      <div class="scroll-hint" aria-hidden="true">
+        <span>Explore</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="section-divider reveal" aria-hidden="true">
+      <div class="line"></div>
+      <div class="diamond"></div>
+      <div class="line"></div>
+    </div>
+
+    <!-- Feed Section -->
+    <section class="feed-section" id="feed">
+      <div class="section-header reveal">
+        <h2>From the Workbench</h2>
+        <p>Notes, finds, and works in progress</p>
+      </div>
+
+      <div class="feed-board reveal">
+        <div class="feed-placeholder">
+          <div class="feed-item-skeleton">
+            <span class="skeleton-date">Apr 14</span>
+            <div class="skeleton-content">
+              <div class="skeleton-line long"></div>
+              <div class="skeleton-line medium"></div>
+              <div class="skeleton-line short"></div>
+            </div>
+          </div>
+          <div class="feed-item-skeleton">
+            <span class="skeleton-date">Apr 12</span>
+            <div class="skeleton-content">
+              <div class="skeleton-line medium"></div>
+              <div class="skeleton-line long"></div>
+            </div>
+          </div>
+          <div class="feed-item-skeleton">
+            <span class="skeleton-date">Apr 10</span>
+            <div class="skeleton-content">
+              <div class="skeleton-line long"></div>
+              <div class="skeleton-line short"></div>
+            </div>
+          </div>
+        </div>
+        <p class="feed-coming-soon">Feed coming soon&hellip;</p>
+      </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="section-divider reveal" aria-hidden="true">
+      <div class="line"></div>
+      <div class="diamond"></div>
+      <div class="line"></div>
+    </div>
+
+    <!-- Forge placeholder (future) -->
+    <section id="forge" style="min-height: 20vh;"></section>
+
+    <!-- About placeholder (future) -->
+    <section id="about" style="min-height: 10vh;"></section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p class="verse">
+      &ldquo;And I have filled him with the Spirit of God, with wisdom, with understanding,
+      with knowledge and with all kinds of skills&rdquo; &mdash;&thinsp;Exodus&nbsp;31:3
+    </p>
+    <p>&copy; The Bezalel Workshop</p>
+  </footer>
+
+  <script>
+    /* ---- Dust particles ---- */
+    (function createDust() {
+      const container = document.getElementById('dust');
+      const count = 15;
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'dust-particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDuration = (8 + Math.random() * 12) + 's';
+        p.style.animationDelay = (Math.random() * 10) + 's';
+        p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
+        p.style.opacity = 0.15 + Math.random() * 0.25;
+        container.appendChild(p);
+      }
+    })();
+
+    /* ---- Nav scroll effect ---- */
+    (function navScroll() {
+      const nav = document.getElementById('nav');
+      let ticking = false;
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          requestAnimationFrame(function() {
+            nav.classList.toggle('scrolled', window.scrollY > 60);
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+    })();
+
+    /* ---- Scroll reveal ---- */
+    (function scrollReveal() {
+      const els = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      els.forEach(function(el) { observer.observe(el); });
+    })();
+
+    /* ---- Smooth nav active state ---- */
+    (function activeNav() {
+      const links = document.querySelectorAll('nav a');
+      const sections = ['feed', 'forge', 'about'];
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            links.forEach(function(l) { l.classList.remove('active'); });
+            const active = document.querySelector('nav a[href="#' + entry.target.id + '"]');
+            if (active) active.classList.add('active');
+          }
+        });
+      }, { threshold: 0.3 });
+      sections.forEach(function(id) {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+    })();
+  </script>
+</body>
+</html>
