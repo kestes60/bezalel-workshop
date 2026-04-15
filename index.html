@@ -453,74 +453,261 @@
       border-width: 0 1px 1px 0;
     }
 
-    .feed-placeholder {
+    /* ---- CATEGORY FILTER BAR ---- */
+    .feed-filters {
       display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
     }
 
-    .feed-item-skeleton {
+    .feed-filter-btn {
+      font-family: var(--font-accent);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cream);
+      background: none;
+      border: 1px solid rgba(184, 115, 51, 0.2);
+      border-radius: 1px;
+      padding: 0.4rem 1rem;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+    }
+
+    .feed-filter-btn:hover {
+      opacity: 0.8;
+      border-color: rgba(184, 115, 51, 0.4);
+    }
+
+    .feed-filter-btn.active {
+      opacity: 1;
+      border-color: var(--copper);
+      background: rgba(184, 115, 51, 0.1);
+    }
+
+    /* ---- FEED LOADING STATE ---- */
+    .feed-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 2rem 0;
+    }
+
+    .feed-loading-spinner {
+      width: 24px;
+      height: 24px;
+      border: 2px solid rgba(184, 115, 51, 0.15);
+      border-top-color: var(--copper);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .feed-loading-text {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--ink-faded);
+      opacity: 0.6;
+    }
+
+    /* Skeleton shimmer for loading */
+    .feed-skeleton-row {
+      width: 100%;
       display: flex;
       gap: 1rem;
       align-items: flex-start;
-      padding: 1rem 0;
-      border-bottom: 1px solid rgba(184, 115, 51, 0.08);
+      padding: 0.75rem 0;
     }
 
-    .feed-item-skeleton:last-child {
-      border-bottom: none;
-    }
-
-    .skeleton-date {
-      font-family: var(--font-accent);
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      color: var(--copper);
-      opacity: 0.4;
-      white-space: nowrap;
-      min-width: 60px;
-      padding-top: 0.2rem;
-    }
-
-    .skeleton-content {
-      flex: 1;
-    }
-
-    .skeleton-line {
+    .feed-skeleton-bar {
       height: 8px;
       border-radius: 1px;
       background: linear-gradient(
         90deg,
-        rgba(184, 115, 51, 0.08),
+        rgba(184, 115, 51, 0.06),
         rgba(184, 115, 51, 0.12),
-        rgba(184, 115, 51, 0.08)
+        rgba(184, 115, 51, 0.06)
       );
       background-size: 200% 100%;
-      animation: shimmer 3s ease-in-out infinite;
-      margin-bottom: 0.5rem;
+      animation: shimmer 2.5s ease-in-out infinite;
     }
-
-    .skeleton-line:last-child {
-      margin-bottom: 0;
-    }
-
-    .skeleton-line.short { width: 60%; }
-    .skeleton-line.medium { width: 85%; }
-    .skeleton-line.long { width: 95%; }
 
     @keyframes shimmer {
       0% { background-position: 200% 0; }
       100% { background-position: -200% 0; }
     }
 
-    .feed-coming-soon {
+    /* ---- LIVE FEED ITEMS ---- */
+    .feed-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .feed-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid rgba(184, 115, 51, 0.08);
+      opacity: 0;
+      transform: translateY(8px);
+      animation: feedItemIn 0.4s ease forwards;
+    }
+
+    .feed-item:last-child {
+      border-bottom: none;
+    }
+
+    @keyframes feedItemIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Category dot */
+    .feed-item-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 0.55rem;
+      box-shadow: 0 0 6px rgba(0,0,0,0.2);
+    }
+
+    .feed-item-dot.cat-creation   { background: #C4943A; } /* warm gold */
+    .feed-item-dot.cat-science    { background: #6B9E8A; } /* sage green */
+    .feed-item-dot.cat-geology    { background: #A67B5B; } /* clay brown */
+
+    .feed-item-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .feed-item-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.3rem;
+      flex-wrap: wrap;
+    }
+
+    .feed-item-source {
+      font-family: var(--font-accent);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--copper);
+      opacity: 0.7;
+    }
+
+    .feed-item-date {
+      font-family: var(--font-accent);
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      color: var(--ink-faded);
+      opacity: 0.5;
+    }
+
+    .feed-item-tag {
+      font-family: var(--font-accent);
+      font-size: 0.55rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      border-radius: 1px;
+      opacity: 0.6;
+    }
+
+    .feed-item-tag.cat-creation {
+      color: #C4943A;
+      border: 1px solid rgba(196, 148, 58, 0.25);
+    }
+
+    .feed-item-tag.cat-science {
+      color: #6B9E8A;
+      border: 1px solid rgba(107, 158, 138, 0.25);
+    }
+
+    .feed-item-tag.cat-geology {
+      color: #A67B5B;
+      border: 1px solid rgba(166, 123, 91, 0.25);
+    }
+
+    .feed-item-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      line-height: 1.35;
+      margin-bottom: 0.35rem;
+    }
+
+    .feed-item-title a {
+      color: var(--parchment);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .feed-item-title a:hover {
+      color: var(--amber);
+    }
+
+    .feed-item-desc {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--ink-faded);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* ---- FEED EMPTY / ERROR STATE ---- */
+    .feed-empty {
       text-align: center;
-      padding-top: 1.5rem;
+      padding: 2rem 0;
       font-family: var(--font-body);
       font-style: italic;
       font-size: 0.9rem;
       color: var(--ink-faded);
       opacity: 0.6;
+    }
+
+    /* ---- RESPONSIVE FEED ---- */
+    @media (max-width: 600px) {
+      .feed-filters {
+        gap: 0.35rem;
+      }
+
+      .feed-filter-btn {
+        font-size: 0.6rem;
+        padding: 0.35rem 0.7rem;
+      }
+
+      .feed-item {
+        gap: 0.7rem;
+      }
+
+      .feed-item-title {
+        font-size: 1rem;
+      }
+
+      .feed-item-desc {
+        font-size: 0.8rem;
+        -webkit-line-clamp: 3;
+      }
+
+      .feed-item-meta {
+        gap: 0.4rem;
+      }
     }
 
     /* ---- FOOTER ---- */
@@ -652,32 +839,34 @@
         <p>Notes, finds, and works in progress</p>
       </div>
 
+      <!-- Category filters -->
+      <div class="feed-filters reveal" role="tablist" aria-label="Feed category filter">
+        <button class="feed-filter-btn active" data-category="all" role="tab" aria-selected="true">All</button>
+        <button class="feed-filter-btn" data-category="creation" role="tab" aria-selected="false">Creation Science</button>
+        <button class="feed-filter-btn" data-category="science" role="tab" aria-selected="false">Science</button>
+        <button class="feed-filter-btn" data-category="geology" role="tab" aria-selected="false">Geology &amp; Earth</button>
+      </div>
+
       <div class="feed-board reveal">
-        <div class="feed-placeholder">
-          <div class="feed-item-skeleton">
-            <span class="skeleton-date">Apr 14</span>
-            <div class="skeleton-content">
-              <div class="skeleton-line long"></div>
-              <div class="skeleton-line medium"></div>
-              <div class="skeleton-line short"></div>
-            </div>
-          </div>
-          <div class="feed-item-skeleton">
-            <span class="skeleton-date">Apr 12</span>
-            <div class="skeleton-content">
-              <div class="skeleton-line medium"></div>
-              <div class="skeleton-line long"></div>
-            </div>
-          </div>
-          <div class="feed-item-skeleton">
-            <span class="skeleton-date">Apr 10</span>
-            <div class="skeleton-content">
-              <div class="skeleton-line long"></div>
-              <div class="skeleton-line short"></div>
-            </div>
+        <!-- Loading state (shown while fetching) -->
+        <div class="feed-loading" id="feed-loading">
+          <div class="feed-loading-spinner"></div>
+          <span class="feed-loading-text">Gathering from the workbench&hellip;</span>
+          <div style="width:100%">
+            <div class="feed-skeleton-row"><div class="feed-skeleton-bar" style="width:92%;"></div></div>
+            <div class="feed-skeleton-row"><div class="feed-skeleton-bar" style="width:78%;animation-delay:0.2s"></div></div>
+            <div class="feed-skeleton-row"><div class="feed-skeleton-bar" style="width:85%;animation-delay:0.4s"></div></div>
+            <div class="feed-skeleton-row"><div class="feed-skeleton-bar" style="width:65%;animation-delay:0.6s"></div></div>
           </div>
         </div>
-        <p class="feed-coming-soon">Feed coming soon&hellip;</p>
+
+        <!-- Live feed items (populated by JS) -->
+        <div class="feed-list" id="feed-list" style="display:none;"></div>
+
+        <!-- Empty/error fallback -->
+        <div class="feed-empty" id="feed-empty" style="display:none;">
+          No items to display right now. Check back soon.
+        </div>
       </div>
     </section>
 
@@ -707,10 +896,9 @@
   <script>
     /* ---- Dust particles ---- */
     (function createDust() {
-      const container = document.getElementById('dust');
-      const count = 15;
-      for (let i = 0; i < count; i++) {
-        const p = document.createElement('div');
+      var container = document.getElementById('dust');
+      for (var i = 0; i < 15; i++) {
+        var p = document.createElement('div');
         p.className = 'dust-particle';
         p.style.left = Math.random() * 100 + '%';
         p.style.animationDuration = (8 + Math.random() * 12) + 's';
@@ -723,8 +911,8 @@
 
     /* ---- Nav scroll effect ---- */
     (function navScroll() {
-      const nav = document.getElementById('nav');
-      let ticking = false;
+      var nav = document.getElementById('nav');
+      var ticking = false;
       window.addEventListener('scroll', function() {
         if (!ticking) {
           requestAnimationFrame(function() {
@@ -738,8 +926,8 @@
 
     /* ---- Scroll reveal ---- */
     (function scrollReveal() {
-      const els = document.querySelectorAll('.reveal');
-      const observer = new IntersectionObserver(function(entries) {
+      var els = document.querySelectorAll('.reveal');
+      var observer = new IntersectionObserver(function(entries) {
         entries.forEach(function(entry) {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
@@ -752,21 +940,204 @@
 
     /* ---- Smooth nav active state ---- */
     (function activeNav() {
-      const links = document.querySelectorAll('nav a');
-      const sections = ['feed', 'forge', 'about'];
-      const observer = new IntersectionObserver(function(entries) {
+      var links = document.querySelectorAll('nav a');
+      var sections = ['feed', 'forge', 'about'];
+      var observer = new IntersectionObserver(function(entries) {
         entries.forEach(function(entry) {
           if (entry.isIntersecting) {
             links.forEach(function(l) { l.classList.remove('active'); });
-            const active = document.querySelector('nav a[href="#' + entry.target.id + '"]');
+            var active = document.querySelector('nav a[href="#' + entry.target.id + '"]');
             if (active) active.classList.add('active');
           }
         });
       }, { threshold: 0.3 });
       sections.forEach(function(id) {
-        const el = document.getElementById(id);
+        var el = document.getElementById(id);
         if (el) observer.observe(el);
       });
+    })();
+
+    /* ============================================
+       RSS FEED ENGINE
+       ============================================ */
+    (function feedEngine() {
+      var PROXY = 'https://api.rss2json.com/v1/api.json?rss_url=';
+      var MAX_ITEMS = 20;
+
+      var FEEDS = [
+        // CREATION SCIENCE
+        { url: 'https://www.icr.org/rss/articles.xml',                              label: 'ICR',            category: 'creation',  categoryLabel: 'Creation Science' },
+        { url: 'https://answersingenesis.org/feed/',                                 label: 'AiG',            category: 'creation',  categoryLabel: 'Creation Science' },
+        { url: 'https://evolutionnews.org/feed/',                                    label: 'Evolution News', category: 'creation',  categoryLabel: 'Creation Science' },
+        // SCIENCE DISCOVERY
+        { url: 'https://www.sciencedaily.com/rss/top/science.xml',                   label: 'ScienceDaily',   category: 'science',   categoryLabel: 'Science' },
+        { url: 'https://phys.org/rss-feed/',                                         label: 'Phys.org',       category: 'science',   categoryLabel: 'Science' },
+        { url: 'https://www.nasa.gov/news-releases/feed/',                           label: 'NASA',           category: 'science',   categoryLabel: 'Science' },
+        // GEOLOGY & EARTH
+        { url: 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.atom', label: 'USGS', category: 'geology', categoryLabel: 'Geology & Earth' },
+        { url: 'https://eos.org/feed',                                               label: 'EOS',            category: 'geology',   categoryLabel: 'Geology & Earth' }
+      ];
+
+      var allItems = [];
+      var activeFilter = 'all';
+
+      var loadingEl = document.getElementById('feed-loading');
+      var listEl    = document.getElementById('feed-list');
+      var emptyEl   = document.getElementById('feed-empty');
+
+      // Strip HTML tags from description text
+      function stripHtml(html) {
+        var tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText || '';
+      }
+
+      // Truncate text to ~160 chars at word boundary
+      function truncate(text, max) {
+        var clean = stripHtml(text).trim();
+        if (clean.length <= max) return clean;
+        return clean.substring(0, max).replace(/\s+\S*$/, '') + '\u2026';
+      }
+
+      // Parse a date string into a Date object, handling edge cases
+      function parseDate(str) {
+        if (!str) return new Date(0);
+        var d = new Date(str);
+        return isNaN(d.getTime()) ? new Date(0) : d;
+      }
+
+      // Format date for display
+      function formatDate(date) {
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        return months[date.getMonth()] + ' ' + date.getDate();
+      }
+
+      // Fetch a single feed via rss2json proxy
+      function fetchFeed(feedConfig) {
+        var url = PROXY + encodeURIComponent(feedConfig.url);
+        return fetch(url)
+          .then(function(res) {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.json();
+          })
+          .then(function(data) {
+            if (data.status !== 'ok' || !data.items) return [];
+            return data.items.map(function(item) {
+              return {
+                title:         item.title || 'Untitled',
+                link:          item.link || '#',
+                description:   truncate(item.description || item.content || '', 160),
+                date:          parseDate(item.pubDate),
+                source:        feedConfig.label,
+                category:      feedConfig.category,
+                categoryLabel: feedConfig.categoryLabel
+              };
+            });
+          })
+          .catch(function() {
+            // Silently skip failed feeds
+            return [];
+          });
+      }
+
+      // Render a single feed item as HTML
+      function renderItem(item, index) {
+        var el = document.createElement('article');
+        el.className = 'feed-item';
+        el.setAttribute('data-category', item.category);
+        el.style.animationDelay = (index * 0.04) + 's';
+
+        el.innerHTML =
+          '<div class="feed-item-dot cat-' + item.category + '"></div>' +
+          '<div class="feed-item-body">' +
+            '<div class="feed-item-meta">' +
+              '<span class="feed-item-source">' + item.source + '</span>' +
+              '<span class="feed-item-date">' + formatDate(item.date) + '</span>' +
+              '<span class="feed-item-tag cat-' + item.category + '">' + item.categoryLabel + '</span>' +
+            '</div>' +
+            '<h3 class="feed-item-title">' +
+              '<a href="' + item.link + '" target="_blank" rel="noopener noreferrer">' +
+                item.title +
+              '</a>' +
+            '</h3>' +
+            (item.description ? '<p class="feed-item-desc">' + item.description + '</p>' : '') +
+          '</div>';
+
+        return el;
+      }
+
+      // Render the full list, applying the active filter
+      function renderList() {
+        listEl.innerHTML = '';
+
+        var filtered = activeFilter === 'all'
+          ? allItems
+          : allItems.filter(function(item) { return item.category === activeFilter; });
+
+        var toShow = filtered.slice(0, MAX_ITEMS);
+
+        if (toShow.length === 0) {
+          listEl.style.display = 'none';
+          emptyEl.style.display = 'block';
+          return;
+        }
+
+        emptyEl.style.display = 'none';
+        listEl.style.display = 'flex';
+
+        toShow.forEach(function(item, i) {
+          listEl.appendChild(renderItem(item, i));
+        });
+      }
+
+      // Set up category filter buttons
+      function initFilters() {
+        var buttons = document.querySelectorAll('.feed-filter-btn');
+        buttons.forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            buttons.forEach(function(b) {
+              b.classList.remove('active');
+              b.setAttribute('aria-selected', 'false');
+            });
+            btn.classList.add('active');
+            btn.setAttribute('aria-selected', 'true');
+            activeFilter = btn.getAttribute('data-category');
+            renderList();
+          });
+        });
+      }
+
+      // Fetch all feeds in parallel, merge, sort, render
+      function init() {
+        initFilters();
+
+        var fetches = FEEDS.map(function(feed) {
+          return fetchFeed(feed);
+        });
+
+        Promise.all(fetches).then(function(results) {
+          // Flatten all results into one array
+          results.forEach(function(items) {
+            allItems = allItems.concat(items);
+          });
+
+          // Sort newest first
+          allItems.sort(function(a, b) {
+            return b.date.getTime() - a.date.getTime();
+          });
+
+          // Hide loading, show results
+          loadingEl.style.display = 'none';
+          renderList();
+        });
+      }
+
+      // Wait for DOM to be ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
     })();
   </script>
 </body>
